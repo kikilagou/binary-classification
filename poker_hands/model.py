@@ -13,3 +13,8 @@ print(train.head())
 print(train.shape)
 print(test.shape)
 
+X = train.drop('hand', axis=1)
+print(X.head())
+
+Y = train['hand']
+print(Y.head())
