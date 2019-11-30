@@ -1,6 +1,7 @@
 import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
+from sklearn.metrics import confusion_matrix
 
 # S = suite, C = card
 headings = ['S1', 'C1', 'S2', 'C2', 'S3', 'C3', 'S4', 'C4', 'S5', 'C5', 'hand']
@@ -81,3 +82,5 @@ def rmse(Y, Y_pred):
 
 Y_pred = X.dot(newB)
 print("root mean square error: ", rmse(Y, Y_pred))
+
+# Confusion matrix using scykit learn
