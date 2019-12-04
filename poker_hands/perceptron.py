@@ -1,5 +1,8 @@
+import random
 import numpy as np
 import pandas as pd
+from sklearn.preprocessing import StandardScaler
+from sklearn.preprocessing import MinMaxScaler
 
 # S = suite, C = card
 headings = ['S1', 'C1', 'S2', 'C2', 'S3', 'C3', 'S4', 'C4', 'S5', 'C5', 'hand']
@@ -12,6 +15,13 @@ feature_set = train.drop('hand', axis=1)
 labels = train['hand'].values
 labels = labels.reshape(len(labels), 1)
 
+# feature_set.describe()
+# scaler = StandardScaler()
+# scaler = MinMaxScaler()
+# feature_set = scaler.fit_transform(feature_set)
+
+print(feature_set.mean(axis=0))
+print(feature_set.std(axis=0))
 # feature_set = np.array([[0,1,0],[0,0,1],[1,0,0],[1,1,0],[1,1,1]])
 # labels = np.array([[1,0,0,1,1]])
 # labels = labels.reshape(5,1)
@@ -20,11 +30,11 @@ print(feature_set.shape)
 print(labels.shape)
 
 
-# defining some hyperparameters for our neural network
-np.random.seed(42)
-weights = np.random.rand(3,1)
+# defining some hyper parameters for our neural network
+# np.random.seed(420)
+weights = np.random.rand(10, 1)
 bias = np.random.rand(1)
-lr = 0.05
+lr = 0.00001
 
 
 # activation function (sigmoid)
@@ -36,8 +46,8 @@ def sigmoid(x):
 def sigmoid_der(x):
     return sigmoid(x)*(1-sigmoid(x))
 
-
-for epoch in range(20000):
+# #
+for epoch in range(1000):
     inputs = feature_set
 
     # step 1: feed forward
@@ -61,3 +71,9 @@ for epoch in range(20000):
 
     for num in z_delta:
         bias -= lr * num
+
+
+
+single_point = np.array([1,10,1,11,1,13,1,12,1,1])
+result = sigmoid(np.dot(single_point, weights) + bias)
+print(result)
