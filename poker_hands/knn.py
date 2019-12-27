@@ -1,8 +1,10 @@
-import numpy as np
 import pandas as pd
+from sklearn import datasets, linear_model
+from sklearn.model_selection import train_test_split
+from matplotlib import pyplot as plt
 
 FEATURES = ['id', 'RI', 'Na', 'Mg', 'Al', 'Si', 'K', 'Ca', 'Ba', 'Fe', 'type']
-test_train_ratio = 0.8
+TRAIN_TEST_RATIO = 0.8
 
 def load_and_prep_data(csv):
     """
@@ -12,8 +14,16 @@ def load_and_prep_data(csv):
     """
     data = pd.read_csv(csv, names=FEATURES)
 
-    # drop the id column
+    x = data.drop('type', axis=1)
+    x = x.drop('id', axis=1)
+    y = data['type']
+
+    print(x.head())
+    print(y.head())
+
     # split the data set into test and training sets
+    X_train, X_test, y_train, y_test = train_test_split(x, y, test_size=1-TRAIN_TEST_RATIO)
+
     # remove the class column into a separate dataframe from the features
     # randomly sample data to split into training and test sets
 
@@ -23,15 +33,21 @@ def load_and_prep_data(csv):
 
     # use histogram to review the distribution and reduce skewness of the data
 
-    print(data.head())
     return data
 
 def data_exploration(data):
     """
-    This method performs basic data exploration on the dataset
+    This method performs basic data exploration on the dataset.
+    Goals are to view:
+    - Data distributions
+    - Identify skewed predictors
+    - Identify outliers
     :param data: the dataset
     :return:
     """
-
+    num_bins = 11
+    n, bins, patches = plt.hist(data, num_bins, facecolor='blue', alpha=0.5)
+    plt.show()
 
 data = load_and_prep_data("glass.data")
+# data_exploration(data)
