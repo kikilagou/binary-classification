@@ -1,10 +1,12 @@
 import pandas as pd
-from sklearn import datasets, linear_model
+from copy import deepcopy
 from sklearn.model_selection import train_test_split
-from matplotlib import pyplot as plt
+import numpy as np
 
-FEATURES = ['id', 'RI', 'Na', 'Mg', 'Al', 'Si', 'K', 'Ca', 'Ba', 'Fe', 'type']
+NAMES = ['id', 'RI', 'Na', 'Mg', 'Al', 'Si', 'K', 'Ca', 'Ba', 'Fe', 'type']
+FEATURES = ['RI', 'Na', 'Mg', 'Al', 'Si', 'K', 'Ca', 'Ba', 'Fe']
 TRAIN_TEST_RATIO = 0.8
+k = 5
 
 def load_and_prep_data(csv):
     """
@@ -12,42 +14,44 @@ def load_and_prep_data(csv):
     :param csv: the raw data
     :return: the finalised dataframe
     """
-    data = pd.read_csv(csv, names=FEATURES)
+    data = pd.read_csv(csv, names=NAMES)
+    data = data.drop('id', axis=1)
 
-    x = data.drop('type', axis=1)
-    x = x.drop('id', axis=1)
+    X = data.drop('type', axis=1)
     y = data['type']
 
-    print(x.head())
-    print(y.head())
+    X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=1-TRAIN_TEST_RATIO, random_state=4)
 
-    # split the data set into test and training sets
-    X_train, X_test, y_train, y_test = train_test_split(x, y, test_size=1-TRAIN_TEST_RATIO)
+    return data, X_train, X_test, y_train, y_test
 
-    # remove the class column into a separate dataframe from the features
-    # randomly sample data to split into training and test sets
 
-    # format data so that it is all to the same decimal point
-    # drop partially filled columns
-    # get rid of extreme values or wrong values
-
-    # use histogram to review the distribution and reduce skewness of the data
-
-    return data
-
-def data_exploration(data):
+def calc_euclidean_distance(X_train, unseen_point):
     """
-    This method performs basic data exploration on the dataset.
-    Goals are to view:
-    - Data distributions
-    - Identify skewed predictors
-    - Identify outliers
-    :param data: the dataset
+    Calculate the distance between the query instance and all the training examples
+    Get the neighbours
     :return:
     """
-    num_bins = 11
-    n, bins, patches = plt.hist(data, num_bins, facecolor='blue', alpha=0.5)
-    plt.show()
+    arr = []
+    X_train_dist = deepcopy(X_train)
+    for index, row in X_train.iterrows():
+        sum = 0
+        for ind, r in unseen_point.iterrows():
+            for i in range(len(FEATURES)):
+                sum += pow(row[i] - r[i], 2)
+        arr.append(sum)
+    X_train_dist['dist'] = arr
 
-data = load_and_prep_data("glass.data")
-# data_exploration(data)
+    X_train_dist.sort_values(by='dist', ascending=True, inplace=True)
+    neighbours = X_train_dist.head(n=k)
+
+    return neighbours
+
+
+
+df, X_train, X_test, y_train, y_test = load_and_prep_data("glass.data")
+
+print(df.head())
+# dataset_minmax(df)
+# print(X_test.iloc[[0]])
+print(calc_euclidean_distance(X_train, X_test.iloc[[0]]))
+#
