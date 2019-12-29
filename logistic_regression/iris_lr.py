@@ -1,1 +1,0 @@
-# https://dataaspirant.com/2017/05/15/implement-multinomial-logistic-regression-python/
