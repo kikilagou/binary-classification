@@ -6,6 +6,8 @@ NAMES = ['id', 'RI', 'Na', 'Mg', 'Al', 'Si', 'K', 'Ca', 'Ba', 'Fe', 'type']
 FEATURES = ['RI', 'Na', 'Mg', 'Al', 'Si', 'K', 'Ca', 'Ba', 'Fe']
 TRAIN_TEST_RATIO = 0.8
 k = 3
+CLASS = NAMES[10]
+
 
 def load_and_prep_data(csv):
     """
@@ -13,15 +15,14 @@ def load_and_prep_data(csv):
     :param csv: the raw data
     :return: the finalised dataframe
     """
-    data = pd.read_csv(csv, names=NAMES)
-    data = data.drop('id', axis=1)
+    X = pd.read_csv(csv, names=NAMES)
+    X = X.drop('id', axis=1)
 
-    # X = data.drop('type', axis=1)
-    y = data['type']
+    y = X[CLASS]
 
-    X_train, X_test, y_train, y_test = train_test_split(data, y, test_size=1-TRAIN_TEST_RATIO, random_state=4)
+    X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=1-TRAIN_TEST_RATIO, random_state=4)
 
-    return data, X_train, X_test, y_train, y_test
+    return X, X_train, X_test, y_train, y_test
 
 
 def calc_euclidean_distance(X_train, unseen_point):
@@ -46,23 +47,22 @@ def calc_euclidean_distance(X_train, unseen_point):
     return neighbours
 
 def predict_class(neighbours):
-    mode = neighbours.loc[:, "type"].mode()
+    mode = neighbours.loc[:, CLASS].mode()
 
     return mode
 
 
 if __name__ == '__main__':
-    # load the data
-    df, X_train, X_test, y_train, y_test = load_and_prep_data("../data/glass.data")
+    _, X_train, X_test, _, _ = load_and_prep_data("../data/glass.data")
 
     correct = 0
     for i in range(len(X_test)):
         row = X_test.iloc[[i]]
         neighbours = calc_euclidean_distance(X_train, row)
         classification_prediction = predict_class(neighbours).iloc[0]
-        actual_classification = row['type'].iloc[0]
+        actual_classification = row[CLASS].iloc[0]
         if actual_classification == classification_prediction:
             correct += 1
 
     accuracy = correct / len(X_test.index) * 100
-    print("Accuracy: {}".format(accuracy))
+    print("Accuracy: {}%".format(accuracy))
