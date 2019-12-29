@@ -55,7 +55,7 @@ def predict_class(neighbours):
 if __name__ == '__main__':
     _, X_train, X_test, _, _ = load_and_prep_data("../data/glass.data")
 
-    correct = 0
+    correct = misclassified = 0
     for i in range(len(X_test)):
         row = X_test.iloc[[i]]
         neighbours = calc_euclidean_distance(X_train, row)
@@ -63,6 +63,9 @@ if __name__ == '__main__':
         actual_classification = row[CLASS].iloc[0]
         if actual_classification == classification_prediction:
             correct += 1
+        else:
+            misclassified += 1
 
     accuracy = correct / len(X_test.index) * 100
     print("Accuracy: {}%".format(accuracy))
+    print('Misclassified samples: {}'.format(misclassified))
