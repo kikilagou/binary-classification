@@ -30,7 +30,6 @@ def calc_euclidean_distance(X_train, unseen_point):
     Get the neighbours
     :return:
     """
-    print(unseen_point)
     arr = []
     X_train_dist = deepcopy(X_train)
     for index, row in X_train.iterrows():
@@ -54,17 +53,9 @@ def predict_class(neighbours):
 
 if __name__ == '__main__':
     # load the data
-    df, X_train, X_test, y_train, y_test = load_and_prep_data("glass.data")
-
-    print(X_train.head())
-    print(X_test.head())
-    print(y_test.head())
-    print(y_train.head())
+    df, X_train, X_test, y_train, y_test = load_and_prep_data("../data/glass.data")
 
     correct = 0
-
-    print()
-
     for i in range(len(X_test)):
         row = X_test.iloc[[i]]
         neighbours = calc_euclidean_distance(X_train, row)
@@ -73,5 +64,5 @@ if __name__ == '__main__':
         if actual_classification == classification_prediction:
             correct += 1
 
-    accuracy = correct / len(X_test.index)
+    accuracy = correct / len(X_test.index) * 100
     print("Accuracy: {}".format(accuracy))
