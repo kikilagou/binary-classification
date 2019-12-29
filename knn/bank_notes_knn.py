@@ -2,7 +2,7 @@ import pandas as pd
 from copy import deepcopy
 from sklearn.model_selection import train_test_split
 
-FEATURES = ['variance of Wavelet Transformed image', 'skewness of Wavelet Transformed image', 'curtosis of Wavelet Transformed image', 'entropy of image']
+FEATURES = ['variance_of_wavelet_transformed_image', 'skewness_of_wavelet_transformed_image', 'curtosis_of_wavelet_transformed_image', 'entropy_of_image']
 NAMES = FEATURES + ['class']
 TRAIN_TEST_RATIO = 0.8
 k = 5
