@@ -98,5 +98,5 @@ if __name__ == '__main__':
     clf.fit(X_no_class, y)
     print('Accuracy from sk-learn: {0}'.format(clf.score(X_no_class, y)))
 
-# Accuracy: 0.9490333919156415
-# Accuracy from sk-learn: 0.9789103690685413
+# Accuracy: 94.90333919156415
+# Accuracy from sk-learn: 97.89103690685413

@@ -85,3 +85,4 @@ if __name__ == '__main__':
     print("Accuracy: {}%".format(accuracy))
     print('Misclassified samples: {}'.format(misclassified))
 
+# Accuracy: 93.859649%

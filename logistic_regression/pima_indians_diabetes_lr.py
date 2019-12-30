@@ -12,8 +12,6 @@ CLASS = 'class'
 def load_and_prep_data(data_file):
     """
     Method to load and prepare the dataset for use
-    :param data_file: the raw data
-    :return: the data split into groups
     """
     X = pd.read_csv(data_file, names=NAMES)
 
@@ -62,9 +60,6 @@ def logistic_regression(X, y, num_steps, learning_rate):
 def calculate_accuracy(predictions, labels):
     """
     Calculates the accuracy between the predictions and the actual classification
-    :param predictions_data: The latest predictions, based on the latest weights, made
-    :param data_class: The genuine classification of the patient
-    :return: The accuracy percentage
     """
     rounded_predictions = np.round(predictions)
 
@@ -93,4 +88,5 @@ if __name__ == '__main__':
     clf = LogisticRegression(fit_intercept=True, C=1e15)
     clf.fit(X_no_class_scaled, y)
     print('Accuracy from sk-learn: {0}'.format(clf.score(X_no_class_scaled, y)))
+
 
